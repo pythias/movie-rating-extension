@@ -1,0 +1,27 @@
+{
+  "name": "Movie Rating",
+  "version": "1.0",
+  "description": "Displays more rating scores on IMDb movie pages",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "options_ui": {
+    "page": "popup.html"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.imdb.com/title/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
