@@ -27,22 +27,39 @@ function displayRating(title, rating) {
     return;
   }
 
-  const copyFrom = document.querySelector('[data-testid="hero-rating-bar__popularity"]');
+  const copyFrom = document.querySelector('[data-testid="hero-rating-bar__aggregate-rating"]');
   const ratingContainer = copyFrom.parentElement;
 
-  var tomatoesItem = copyFrom.cloneNode(true);
-  tomatoesItem.firstChild.innerText = rating.Source.toUpperCase();
-  tomatoesItem.querySelector('a').target = "_blank";
-  tomatoesItem.querySelector('a').href = getUrl(title, rating);
-  tomatoesItem.querySelector('[data-testid="hero-rating-bar__popularity__score"]').innerText = rating.Value;
-  tomatoesItem.querySelector('[data-testid="hero-rating-bar__popularity__delta"]').remove();
+  var ratingElement = copyFrom.cloneNode(true);
 
-  var svgElement = tomatoesItem.querySelector('svg');
+  // set the rating title
+  ratingElement.firstChild.innerText = getTitle(rating).toUpperCase();
+
+  // set rating page url
+  ratingElement.querySelector('a').target = "_blank";
+  ratingElement.querySelector('a').href = getUrl(title, rating);
+
+  // set the rating score
+  var scoreElement = ratingElement.querySelector('[data-testid="hero-rating-bar__aggregate-rating__score"]');
+  scoreElement.firstChild.innerText = rating.Value;
+
+  // remove the other elements
+  keepFirstChildElement(scoreElement);
+  keepFirstChildElement(scoreElement.parentElement);
+
+  // replace the tomato icon
+  var svgElement = ratingElement.querySelector('svg');
   var newIconElement = createIcon(rating);
   svgElement.parentNode.appendChild(newIconElement);
   svgElement.remove();
 
-  ratingContainer.appendChild(tomatoesItem);
+  ratingContainer.appendChild(ratingElement);
+}
+
+function keepFirstChildElement(element) {
+  for (let index = element.childNodes.length - 1; index > 0; index--) {
+    element.removeChild(element.childNodes[index]);
+  }
 }
 
 function getUrl(title, rating) {
@@ -78,6 +95,17 @@ function createIcon(rating) {
       return iconElement;
     default:
       return iconElement;
+  }
+}
+
+function getTitle(rating) {
+  switch (rating.Source) {
+    case "Rotten Tomatoes":
+      return "Tomatoes";
+    case "Metacritic":
+      return "Metacritic";
+    default:
+      return rating.Source;
   }
 }
 

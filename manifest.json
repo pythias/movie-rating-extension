@@ -1,6 +1,6 @@
 {
   "name": "Movie Rating",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Displays more rating scores on IMDb movie pages",
   "manifest_version": 3,
   "permissions": [
